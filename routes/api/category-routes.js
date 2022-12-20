@@ -42,13 +42,22 @@ router.post('/', async (req, res) => {
   }
 });
 
-// router.put('/:id', async (req, res) => {
-//   try {
-//     const categoryData = await Category.update({
-
-//     })
-//   }
-// });
+router.put('/:id', async (req, res) => {
+  try {
+    const categoryData = await Category.update(req.body, {
+      where: {
+        id: req.params.id,
+      }
+    });
+    if (!categoryData[0]) {
+      res.status(404).json({ message: 'No category with this ID!' });
+      return;
+    }
+    res.status(200).json(categoryData);
+  } catch (err) {
+    res.status(500).json({ message: 'You messed something up dummy' });
+  }
+});
 
 router.delete('/:id', async (req, res) => {
   try {
